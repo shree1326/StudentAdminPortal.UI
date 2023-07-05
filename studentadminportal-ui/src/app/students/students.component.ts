@@ -19,7 +19,6 @@ dataSource: MatTableDataSource<Student> = new  MatTableDataSource<Student>();
 @ViewChild(MatSort) matSort!: MatSort;
 filterString = '';
   constructor(private studentService: StudentService) {}
-  
     ngOnInit(): void {
       //Fetch Students
       this.studentService.getAllStudents()
@@ -34,15 +33,14 @@ filterString = '';
           if (this.matSort) {
             this.dataSource.sort = this.matSort; 
           }
+          console.log(this.students[0]);
         },
         (errorResponse) => {
           console.log(errorResponse);
         }
       );
     }
-
     filterStudents(){
       this.dataSource.filter = this.filterString.trim().toLowerCase();
     }
-
 }
