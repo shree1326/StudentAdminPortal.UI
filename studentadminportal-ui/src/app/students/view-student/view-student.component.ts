@@ -31,8 +31,11 @@ export class ViewStudentComponent implements OnInit {
       physicalAddress: '',
       postalAddress: ''
     }
-  }
-  
+  };
+
+  isNewStudent = false;
+  header ='';
+
   genderList: Gender[] = [];
 constructor(private readonly studentService: StudentService, 
   private readonly route: ActivatedRoute,
@@ -46,16 +49,26 @@ this.route.paramMap.subscribe(
    this.studentId= params.get('id');
 
    if (this.studentId) {
-    this.studentService.getStudent(this.studentId)
-      .subscribe(
-        (successResponse) => {
-          this.student = successResponse;
-          console.log(this.student);
-          },       
-        (errorResponse) => {
-          console.log(errorResponse);
-        }
-      );
+      if (this.studentId.toLowerCase() === 'Add'.toLowerCase()) {
+        this.isNewStudent = true;
+        this.header = 'Add New Student';
+      }
+      else{
+        this.isNewStudent = false;
+        this.header = 'Edit Student';
+        this.studentService.getStudent(this.studentId)
+          .subscribe(
+            (successResponse) => {
+              this.student = successResponse;
+              console.log(this.student);
+              },       
+            (errorResponse) => {
+              console.log(errorResponse);
+            }
+          );
+      }
+
+    
 
       this.genderService.getGenderList()
       .subscribe(
@@ -101,5 +114,23 @@ this.route.paramMap.subscribe(
         console.log(errorResponse);
       }
     );
+  }
+
+  Add(): void{
+    this.studentService.addStudent(this.student)
+    .subscribe(
+      (successResponse)=>{
+        console.log(successResponse);
+        this.snackBar.open('Student Added Successfully', undefined, {
+          duration: 2000
+        });
+        setTimeout(() => {
+          this.router.navigate(['Students/' , successResponse.id]);
+        }, 2000);
+        }, 
+      (errorResponse)=>{
+        console.log(errorResponse);
+      }
+    )
   }
 }

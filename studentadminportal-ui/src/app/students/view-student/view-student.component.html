@@ -1,6 +1,6 @@
 <div class="page-header">
     <div class="container" style="color: rgb(177, 177, 243);">
-        <h1 style="margin-left: 1em;">Students List</h1>
+        <h1 style="margin-left: 1em;">{{header}}</h1>
     </div>
 </div>
 <div class="container">
@@ -85,9 +85,12 @@ Go Back
         </div>
         <div class="row">
             <div class="col-xs-12">
-                <div class="row between-xs">
+                <div class="row between-xs" *ngIf="!isNewStudent">
                 <button mat-raised-button color="primary" (click)="Update()">Save</button>
                 <button mat-raised-button color="primary" (click)="Delete()">Delete</button>
+            </div>
+            <div class="row between-xs" *ngIf="isNewStudent">
+                <button mat-raised-button color="primary" (click)="Add()">Add</button>
             </div>
             </div>
         </div>
